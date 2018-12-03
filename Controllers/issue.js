@@ -4,6 +4,7 @@ const handleIssue=(req,res,db)=>
  var currentTime = new Date();
  var currentOffset = currentTime.getTimezoneOffset();
  var ISTOffset = 330;
+ var co;
  var c = new Date(currentTime.getTime() + (ISTOffset + currentOffset)*60000);
  cd=c.getFullYear()+"-"+(((c.getMonth()+1)<10)?'0':'')+(c.getMonth()+1)+"-"+((c.getDate()<10)?'0':'')+c.getDate();
 var issue_date=cd;
@@ -30,6 +31,17 @@ if(!mem_id || !item_id)
 }
 else
 	{
+		db('a.issue').count('mem_id').where('mem_id','=',mem_id).
+		then(result=>
+		{
+			
+			co=parseInt(result[0].count);
+		if(co > 3)
+		{
+			res.status(400).json("already issued 4 items");
+		}
+		else
+		{
 		db.select('name').from('a.member')
 		.where('id','=',mem_id)
 		.then(result=>
@@ -86,6 +98,11 @@ else
 	.catch(err=>res.status(400).json('item not issued'))	
 
 	
+}
+		
+		}).catch(err=>console.log(err))
+
+		
 }
 }
 

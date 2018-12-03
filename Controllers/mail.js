@@ -11,10 +11,10 @@ var transporter = nodemailer.createTransport({
 
 const sendMail=(req,res,db,name,email)=>
 {
-  var table;
+  var table,flag1=1;
     const {id,flag}=req.body;
 	const token=randomstring.generate();
-  const html=`hi ${name}
+  const html=`Hi ${name}
 <br>
 THANK YOU FOR REGISTERING !!
 <br><br>
@@ -46,11 +46,14 @@ PLEASE VERIFY YOUR EMAIL BY TYPING THE FOLLOWING TOKEN
     {
 		transporter.sendMail(mailOptions, function(error, info){
   if (error) {
-    res.json(false);
+   flag1=0;
   } else {
     //console.log('Email sent: ' + info.response);
   }})
-	res.json(true);
+    if(flag1==1)
+	res.json(true)
+else
+  res.json(false)
   }
   else
   return res.status(400).json(false)})

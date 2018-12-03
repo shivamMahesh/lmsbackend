@@ -14,7 +14,7 @@ const sendMail=(req,res,db,name,email)=>
   var table;
     const {id,flag}=req.body;
 	const token=randomstring.generate();
-  const html=`hi ${name}
+  const html=`Hi ${name}
 <br>
 RESET YOUR PASSWORD
 <br>
